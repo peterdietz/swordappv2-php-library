@@ -2,7 +2,7 @@
     // Test the V2 PHP client implementation using the Simple SWORD Server (SSS)
 
 	// The URL of the service document
-	$testurl = "http://localhost/sss/sd-uri";
+	$testurl = "http://mblwhoi.longsight.com/swordv2/servicedocument";
 	
 	// The user (if required)
 	$testuser = "sword";
@@ -14,7 +14,7 @@
 	//$testobo = "user@swordapp.com";
 
 	// The URL of the example deposit collection
-	$testdepositurl = "http://localhost/sss/col-uri/da9b9feb-4266-446a-8847-46f6c30b2ff0";
+	$testdepositurl = "http://mblwhoi.longsight.com/swordv2/collection/123456789/50";
 
 	// The test atom entry to deposit
 	$testatomentry = "test-files/atom_multipart/atom";
@@ -29,7 +29,7 @@
 	$testmultipart2 = "test-files/atom_multipart_package2";
 
 	// The test content zip file to deposit
-	$testzipcontentfile = "test-files/atom_multipart_package2.zip";
+	$testzipcontentfile = "test-files/whoi.zip";
 
     // A plain content file
     $testextrafile = "test-files/swordlogo.jpg";
@@ -46,7 +46,7 @@
 	require("../swordappclient.php");
     $testsac = new SWORDAPPClient();
 
-	if (false) {
+	if (true) {
 		print "About to request servicedocument from " . $testurl . "\n";
 		if (empty($testuser)) {
             print "As: anonymous\n";
@@ -62,15 +62,15 @@
 
         print "\n\n";
 	}
-	
+
 	if (true) {
-		print "About to deposit multipart file (" . $testmultipart . ") to " . $testdepositurl . "\n";
+		print "About to deposit multipart file (" . $testzipcontentfile . ") to " . $testdepositurl . "\n";
 		if (empty($testuser)) {
             print "As: anonymous\n";
         } else {
             print "As: " . $testuser . "\n";
         }
-		$testdr = $testsac->depositMultipart($testdepositurl, $testuser, $testpw, $testobo, $testmultipart, $testpackaging, false);
+        $testdr = $testsac->deposit($testdepositurl, $testuser, $testpw, $testobo, $testzipcontentfile, $testpackaging, $testcontenttype, false);
 		print "Received HTTP status code: " . $testdr->sac_status . " (" . $testdr->sac_statusmessage . ")\n";
 		
 		if (($testdr->sac_status >= 200) || ($testdr->sac_status < 300)) {
